@@ -10,14 +10,12 @@
 
 #include "../include/SDL2/SDL.h"
 #include "../include/SDL2/SDL_Image.h"
-#include "entity.h"
+
 
 const int WIDTH = 800, HEIGH = 600;
 
 class Game{
 private:
-
-    SDL_Renderer* ren;
     SDL_Window* win;
 
     bool is_running;
@@ -25,7 +23,7 @@ private:
 
     int frame_count, timer_fps,last_frame;
 
-    std::vector<Entity> entity_list;
+
 
 public:
 
@@ -37,8 +35,9 @@ public:
     void input();
     void update();
     void render();
-    void draw(Entity o);
 
+    static SDL_Renderer *ren;
+    static SDL_Event event;
 };
 
 #endif //TEMPGAMEMOTOR_GAME_H

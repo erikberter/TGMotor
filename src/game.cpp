@@ -3,22 +3,39 @@
 //
 
 #include "game.h"
+#include "game_map.h"
+#include "ECS/ECS.h"
+#include "ECS/Components/components.h"
+#include "physics/collision.h"
+
+SDL_Renderer* Game::ren = nullptr;
+SDL_Event Game::event;
+
+
+Game_map map;
+Manager man;
+
+auto& player(man.add_entity());
+auto& wall(man.add_entity());
 
 Game::Game(){
     SDL_Init(0);
     SDL_CreateWindowAndRenderer(WIDTH, HEIGH, 0, &win, &ren);
     SDL_SetWindowTitle(win, "Eralia");
 
-    Entity star("../res/sprite/star.png",ren);
-    star.set_src(0,0,75,75);
-    star.set_dest(50,50,100,100);
-    entity_list.push_back(star);
-    Entity star2("../res/sprite/star.png",ren);
-    star2.set_src(0,0,75,75);
-    star2.set_dest(150,150,100,100);
-    entity_list.push_back(star2);
+    map = Game_map("map_prueba.map");
+
     is_running = true;
     count = 0;
+
+    player.add_component<Transform_component>();
+    player.add_component<Keyboard_controller>();
+    player.add_component<Collision_component>("Player");
+    player.add_component<Sprite_component>("../res/sprite/sp1.png");
+
+    wall.add_component<Transform_component>(320,320,32,32,1);
+    wall.add_component<Sprite_component>("../res/sprite/star.png");
+    wall.add_component<Collision_component>("Wall");
 }
 Game::~Game(){
     is_running = false;
@@ -29,6 +46,8 @@ Game::~Game(){
 }
 
 void Game::main_loop() {
+
+
 
     static int last_time=0;
     while(is_running){
@@ -47,55 +66,43 @@ void Game::main_loop() {
 
         frame_count++;
         int timer_fps = SDL_GetTicks()-last_frame;
-        if(timer_fps < 1000/60)
-            SDL_Delay(1000/60-timer_fps);
+        // 17 = ceil( 1 s / 60 fps )
+        if(timer_fps < 17)
+            SDL_Delay(17-timer_fps);
 
-
-        if(count>3) is_running=false;
-
+        if(count>300) is_running=false;
     }
-
 }
 
 void Game::render() {
 
     SDL_RenderClear(ren);
-
-    SDL_SetRenderDrawColor(ren, 255,0,0,255);
-    SDL_Rect rect;
-    rect.x = rect.y = 0;
-    rect.w = 360;
-    rect.h = 240;
-
-    SDL_RenderFillRect(ren, &rect);
-    for(Entity ent : entity_list)
-        ent.render();
-
-
+    map.render_map();
+    man.draw();
     SDL_RenderPresent(ren);
 
 }
 
 void Game::update(){
-    for(int i = 0; i < entity_list.size(); i++)
-        entity_list[i].update();
+    man.refresh();
+    man.update();
+    if(Collision::is_collision(
+            player.get_component<Collision_component>().coll,
+            wall.get_component<Collision_component>().coll)
+            ){
+        player.get_component<Transform_component>().vel*=-1;
+        player.update();
+        player.get_component<Transform_component>().vel*=-1;
+    }
 }
 
 void Game::input(){
-    SDL_Event event;
     SDL_PollEvent(&event);
     switch(event.type){
         case SDL_QUIT:
             is_running = false;
             break;
-
         default:
             break;
     }
-}
-
-void Game::draw(Entity o){
-    SDL_Rect dest = o.get_dest();
-    SDL_Rect src = o.get_src();
-    SDL_RenderCopyEx(ren, o.get_tex(), &src, &dest,0, NULL, SDL_FLIP_NONE);
 }

@@ -5,23 +5,20 @@
 #ifndef TEMPGAMEMOTOR_ENTITY_H
 #define TEMPGAMEMOTOR_ENTITY_H
 
-#include "../include/SDL2/SDL.h"
-#include "../include/SDL2/SDL_image.h"
+#include "game.h"
 
 #include "texture_manager.h"
 
-class Entity {
+class Entity_t {
 
 private:
     int coord_x, coord_y;
     SDL_Rect dest, src;
     SDL_Texture* tex;
 
-    SDL_Renderer* ren;
-
 public:
-    Entity() {};
-    Entity(const char* texture_sheet, SDL_Renderer *ren_t);
+    Entity_t() {};
+    Entity_t(const char* texture_sheet);
 
     void update();
     void render();
@@ -31,7 +28,7 @@ public:
     SDL_Texture* get_tex(){return tex;}
     void set_dest(int x, int y, int w, int h);
     void set_src(int x, int y, int w, int h);
-    void set_texture(const char* texture_sheet, SDL_Renderer *ren);
+    void set_texture(const char* texture_sheet);
 };
 
 

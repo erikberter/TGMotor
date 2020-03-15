@@ -6,7 +6,7 @@
 
 
 
-Entity::Entity(const char* texture_sheet, SDL_Renderer *ren_t){
+Entity_t::Entity_t(const char* texture_sheet){
     coord_y = coord_x = 0;
     SDL_Rect init_src, init_dst;
     init_src.x = init_src.y = init_dst.x = init_dst.y = 0;
@@ -14,11 +14,10 @@ Entity::Entity(const char* texture_sheet, SDL_Renderer *ren_t){
 
     dest = init_dst;
     src = init_src;
-    ren = ren_t;
-    tex = TextureManager::LoadTexture(texture_sheet, ren);
+    tex = TextureManager::LoadTexture(texture_sheet);
 }
 
-void Entity::set_dest(int x, int y, int w, int h){
+void Entity_t::set_dest(int x, int y, int w, int h){
     coord_y = y;
     coord_x = x;
 
@@ -28,24 +27,24 @@ void Entity::set_dest(int x, int y, int w, int h){
     dest.h = h;
 
 }
-void Entity::set_src(int x, int y, int w, int h){
+void Entity_t::set_src(int x, int y, int w, int h){
     src.x = x;
     src.y = y;
     src.w = w;
     src.h = h;
 
 }
-void Entity::set_texture(const char* texture_sheet, SDL_Renderer *ren){
-    tex = TextureManager::LoadTexture(texture_sheet, ren);
+void Entity_t::set_texture(const char* texture_sheet){
+    tex = TextureManager::LoadTexture(texture_sheet);
 }
 
-void Entity::update(){
+void Entity_t::update(){
     coord_x++;
     coord_y++;
     dest.x = coord_x;
     dest.y = coord_y;
 }
 
-void Entity::render() {
-    SDL_RenderCopy(ren, tex, &src,&dest);
+void Entity_t::render() {
+    SDL_RenderCopy(Game::ren, tex, &src,&dest);
 }
