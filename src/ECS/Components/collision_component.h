@@ -5,8 +5,10 @@
 #ifndef TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 #define TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 
+#include "../../game.h"
 #include "SDL.h"
 #include "../ECS.h"
+#include "transform_component.h"
 
 
 class Collision_component : public Component {
@@ -25,7 +27,7 @@ public:
         if(!entity->has_component<Transform_component>())
             entity->add_component<Transform_component>();
         transf = &entity->get_component<Transform_component>();
-
+        Game::colliders.push_back(this);
 
     }
 

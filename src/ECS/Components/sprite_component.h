@@ -8,6 +8,8 @@
 #include "transform_component.h"
 #include "SDL.h"
 #include "../../texture_manager.h"
+#include "../animation.h"
+#include <map>
 
 class Sprite_component : public Component{
 private:
@@ -15,9 +17,35 @@ private:
     SDL_Texture *tex;
     SDL_Rect src,dest;
 
+    bool is_animated = false;
+
+    int frames = 0;
+    int speed = 100;
+
 public:
+    int animation_id = 0;
+
+    std::map<const char*, Animation> animations;
 
     Sprite_component() = default;
+
+    Sprite_component(const char* file_path, bool animated){
+        is_animated = animated;
+
+        if(is_animated){
+            Animation stand = Animation(0, 4, 100);
+            Animation walk = Animation(1, 4, 100);
+
+            animations.emplace("stand",stand);
+            animations.emplace("walk",walk);
+
+            play("stand");
+        }
+        speed = 1;
+        animation_id = 0;
+        set_tex(file_path);
+    }
+
     Sprite_component(const char* file_path){
         set_tex(file_path);
     }
@@ -35,18 +63,23 @@ public:
             entity->add_component<Transform_component>();
         transf = &entity->get_component<Transform_component>();
 
+        transf->scale = 2;
+
         src.x = src.y = 0;
         src.w = transf->width;
         src.h = transf->height;
 
         dest.x = static_cast<int>(transf->x());
         dest.y = static_cast<int>(transf->y());
-        dest.w = dest.h = 64;
-        std::cout  << "Estamos en " << dest.x << " : " << dest.y << std::endl;
+        dest.w = dest.h = 50;
     }
 
 #include <iostream>
     void update() override{
+        if(is_animated)
+            src.x = src.w* static_cast<int>((SDL_GetTicks() / speed) % frames);
+
+        src.y = animation_id * transf->height;
         dest.x = static_cast<int>(transf->x());
         dest.y = static_cast<int>(transf->y());
 
@@ -56,6 +89,12 @@ public:
 
     void draw() override{
         TextureManager::draw(tex, src,dest);
+    }
+
+    void play(const char* anim_name){
+        frames = animations[anim_name].frames;
+        animation_id = animations[anim_name].index;
+        speed = animations[anim_name].speed;
     }
 };
 

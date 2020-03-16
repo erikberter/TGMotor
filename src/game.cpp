@@ -7,16 +7,23 @@
 #include "ECS/ECS.h"
 #include "ECS/Components/components.h"
 #include "physics/collision.h"
+#include "ECS/Components/tile_component.h"
 
 SDL_Renderer* Game::ren = nullptr;
 SDL_Event Game::event;
 
+std::vector<Collision_component*> Game::colliders;
 
 Game_map map;
 Manager man;
+Manager map_manager;
 
 auto& player(man.add_entity());
 auto& wall(man.add_entity());
+
+enum group_labels : std::size_t {
+    G_MAP,G_PLAYER,G_ENEMY, G_COLLIDER
+};
 
 Game::Game(){
     SDL_Init(0);
@@ -29,13 +36,16 @@ Game::Game(){
     count = 0;
 
     player.add_component<Transform_component>();
+    player.add_component<Sprite_component>("../res/sprite/mago1.png", true);
     player.add_component<Keyboard_controller>();
     player.add_component<Collision_component>("Player");
-    player.add_component<Sprite_component>("../res/sprite/sp1.png");
+
+    player.add_group(G_PLAYER);
 
     wall.add_component<Transform_component>(320,320,32,32,1);
-    wall.add_component<Sprite_component>("../res/sprite/star.png");
+    wall.add_component<Sprite_component>("../res/sprite/star.png", false);
     wall.add_component<Collision_component>("Wall");
+    wall.add_group(G_COLLIDER);
 }
 Game::~Game(){
     is_running = false;
@@ -46,8 +56,6 @@ Game::~Game(){
 }
 
 void Game::main_loop() {
-
-
 
     static int last_time=0;
     while(is_running){
@@ -74,11 +82,14 @@ void Game::main_loop() {
     }
 }
 
+auto& players(man.get_group(G_PLAYER));
+
 void Game::render() {
 
     SDL_RenderClear(ren);
-    map.render_map();
-    man.draw();
+    map_manager.draw();
+    for(auto& t : players)
+        t->draw();
     SDL_RenderPresent(ren);
 
 }
@@ -105,4 +116,9 @@ void Game::input(){
         default:
             break;
     }
+}
+
+void Game::add_tile(int x, int y, int id){
+    auto& tile(map_manager.add_entity());
+    tile.add_component<Tile_component>(x,y,32,32, id);
 }

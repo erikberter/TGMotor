@@ -4,10 +4,10 @@
 
 #include "game_map.h"
 #include "texture_manager.h"
+#include "ECS/Components/tile_component.h"
 #include <fstream>
 
 Game_map::Game_map(){
-    load_default_assets();
 }
 Game_map::Game_map(int** map_t, int map_width_t, int map_height_t){
     map = new int*[map_height_t];
@@ -22,12 +22,10 @@ Game_map::Game_map(int** map_t, int map_width_t, int map_height_t){
     delete[] map_t;
     for(int i = 0; i < map_height_t; i++)
         delete[] map_t[i];
-    load_default_assets();
 }
 
 Game_map::Game_map(const char* map_sheet){
     load_map(map_sheet);
-    load_default_assets();
 }
 
 Game_map::~Game_map(){
@@ -35,10 +33,6 @@ Game_map::~Game_map(){
     //SDL_DestroyTexture(water);
 }
 
-void Game_map::load_default_assets(){
-    grass = TextureManager::LoadTexture("../res/tiles/grass-tile.png");
-    water = TextureManager::LoadTexture("../res/tiles/water-tile.png");
-}
 
 
 void Game_map::load_map(const char* map_sheet){
@@ -47,9 +41,20 @@ void Game_map::load_map(const char* map_sheet){
     std::ifstream infile(file_path);
     infile >> map_height >> map_width;
     reshape_map();
-    for(int i = 0; i < map_height; i++)
-        for(int j = 0; j < map_width; j++)
+
+    int x = 0, y = 0, map_id = 0;
+    // Se puede cambiar x,y por i*50, j*50, pero no se que es mejor
+
+    for(int i = 0; i < map_height; i++){
+        for(int j = 0; j < map_width; j++){
             infile >> map[i][j];
+            Game::add_tile(x,y,map[i][j]);
+            x+=50;
+        }
+        x = 0;
+        y+=50;
+    }
+
     infile.close();
 }
 
@@ -57,33 +62,16 @@ void Game_map::load_map(const char* map_sheet){
 
 void Game_map::print_map(){
     for(int i = 0; i < map_height; i++){
-        for(int j = 0; j < map_width; j++){
+        for(int j = 0; j < map_width; j++)
             std::cout << map[i][j] << " ";
-
-        }
         std::cout << std::endl;
     }
 }
 
-void Game_map::render_map(){
-    SDL_Rect src, dest;
-    src.x = src.y = dest.x = dest.y = 0;
-    src.w = src.h = 50;
-    dest.w = dest.h = 50;
-
-    for(int i = 0; i < map_height; i++) {
-        for (int j = 0; j < map_width; j++) {
-            if (map[i][j] == 0) TextureManager::draw(water, src, dest);
-            else TextureManager::draw(grass, src, dest);
-            dest.x+=50;
-        }
-        dest.x = 0;
-        dest.y+=50;
-    }
-}
 
 void Game_map::reshape_map(){
     map = new int*[map_height];
     for(int i = 0; i < map_height; i++)
         map[i] = new int[map_width];
 }
+

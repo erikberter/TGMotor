@@ -14,7 +14,7 @@
 class Keyboard_controller : public Component {
 public:
     Transform_component *transf;
-
+    Sprite_component *sprite;
     Keyboard_controller(){
     };
 
@@ -22,6 +22,9 @@ public:
         if(!entity->has_component<Transform_component>())
             entity->add_component<Transform_component>();
         transf = &entity->get_component<Transform_component>();
+        if(!entity->has_component<Sprite_component>())
+            entity->add_component<Sprite_component>();
+        sprite = &entity->get_component<Sprite_component>();
     }
 
     void update() override{
@@ -29,15 +32,19 @@ public:
             switch(Game::event.key.keysym.sym){
                 case SDLK_w:
                     transf->vel.y = -1;
+                    sprite->play("walk");
                     break;
                 case SDLK_s:
                     transf->vel.y = 1;
+                    sprite->play("walk");
                     break;
                 case SDLK_a:
                     transf->vel.x = -1;
+                    sprite->play("walk");
                     break;
                 case SDLK_d:
                     transf->vel.x = 1;
+                    sprite->play("walk");
                     break;
                 case SDLK_SPACE:
 
@@ -50,15 +57,19 @@ public:
             switch(Game::event.key.keysym.sym){
                 case SDLK_w:
                     transf->vel.y = 0;
+                    sprite->play("stand");
                     break;
                 case SDLK_s:
                     transf->vel.y = 0;
+                    sprite->play("stand");
                     break;
                 case SDLK_a:
                     transf->vel.x = 0;
+                    sprite->play("stand");
                     break;
                 case SDLK_d:
                     transf->vel.x = 0;
+                    sprite->play("stand");
                     break;
                 default:
                     break;

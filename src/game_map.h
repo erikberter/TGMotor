@@ -7,6 +7,7 @@
 
 
 #include <SDL_render.h>
+#include "ECS/ECS.h"
 
 class Game_map {
 private:
@@ -17,16 +18,17 @@ private:
     SDL_Texture* water;
 
 public:
+
     Game_map();
     Game_map(int** map_t, int map_width_t, int map_height_t);
     Game_map(const char* map_sheet);
 
     ~Game_map();
 
+
     void load_default_assets();
 
     void load_map(const char* map_sheet);
-    void render_map();
     void print_map();
     void reshape_map();
 
