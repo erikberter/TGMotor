@@ -33,11 +33,14 @@ public:
         is_animated = animated;
 
         if(is_animated){
-            Animation stand = Animation(0, 4, 100);
-            Animation walk = Animation(1, 4, 100);
-
+            Animation stand = Animation(0, 1, 100);
+            Animation walk_front = Animation(1, 4, 100);
+            Animation walk_lateral = Animation(2, 4, 100);
+            Animation walk_back = Animation(3, 4, 100);
             animations.emplace("stand",stand);
-            animations.emplace("walk",walk);
+            animations.emplace("walk_front",walk_front);
+            animations.emplace("walk_lateral",walk_lateral);
+            animations.emplace("walk_back",walk_back);
 
             play("stand");
         }

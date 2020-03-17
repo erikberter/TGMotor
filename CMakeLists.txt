@@ -11,7 +11,7 @@ string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)
 
 include_directories(${SDL2_INCLUDE_DIRS} )
 
-add_executable(${PROJECT_NAME} src/main.cpp src/game.cpp src/game.h src/entity.cpp src/entity.h src/texture_manager.h src/texture_manager.cpp src/game_map.cpp src/game_map.h src/ECS/ECS.cpp src/ECS/ECS.h src/ECS/Components/transform_component.h src/ECS/Components/sprite_component.h src/ECS/Components/components.h src/vector2d.h src/ECS/keyboard_controller.h src/ECS/Components/collision_component.h src/physics/collision.h src/physics/collision.cpp src/ECS/Components/tile_component.h src/ECS/animation.h)
+add_executable(${PROJECT_NAME} src/main.cpp src/game.cpp src/game.h src/entity.cpp src/entity.h src/texture_manager.h src/texture_manager.cpp src/game_map.cpp src/game_map.h src/ECS/ECS.cpp src/ECS/ECS.h src/ECS/Components/transform_component.h src/ECS/Components/sprite_component.h src/ECS/Components/components.h src/vector2d.h src/ECS/keyboard_controller.h src/ECS/Components/collision_component.h src/physics/collision.h src/physics/collision.cpp src/ECS/Components/tile_component.h src/ECS/animation.h src/entities/player.h src/entities/enemy.h src/entities/enemy.cpp src/ECS/Components/random_movement_component.h)
 
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
 

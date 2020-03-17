@@ -10,12 +10,16 @@
 
 #include "../include/SDL2/SDL.h"
 #include "../include/SDL2/SDL_Image.h"
-
+#include "ECS/ECS.h"
 
 
 const int WIDTH = 800, HEIGH = 600;
 
 class Collision_component;
+
+enum group_labels : std::size_t {
+    G_MAP,G_PLAYER,G_ENEMY, G_COLLIDER
+};
 
 class Game{
 private:
@@ -41,6 +45,9 @@ public:
     static SDL_Event event;
     static std::vector<Collision_component*> colliders;
     static void add_tile(int x, int y, int id);
+
+    static Manager man;
+
 };
 
 #endif //TEMPGAMEMOTOR_GAME_H

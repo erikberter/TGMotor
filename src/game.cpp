@@ -6,8 +6,10 @@
 #include "game_map.h"
 #include "ECS/ECS.h"
 #include "ECS/Components/components.h"
-#include "physics/collision.h"
 #include "ECS/Components/tile_component.h"
+
+#include "entities/player.h"
+#include "entities/enemy.h"
 
 SDL_Renderer* Game::ren = nullptr;
 SDL_Event Game::event;
@@ -15,15 +17,11 @@ SDL_Event Game::event;
 std::vector<Collision_component*> Game::colliders;
 
 Game_map map;
-Manager man;
+Manager Game::man;
 Manager map_manager;
 
-auto& player(man.add_entity());
-auto& wall(man.add_entity());
 
-enum group_labels : std::size_t {
-    G_MAP,G_PLAYER,G_ENEMY, G_COLLIDER
-};
+
 
 Game::Game(){
     SDL_Init(0);
@@ -35,17 +33,8 @@ Game::Game(){
     is_running = true;
     count = 0;
 
-    player.add_component<Transform_component>();
-    player.add_component<Sprite_component>("../res/sprite/mago1.png", true);
-    player.add_component<Keyboard_controller>();
-    player.add_component<Collision_component>("Player");
-
-    player.add_group(G_PLAYER);
-
-    wall.add_component<Transform_component>(320,320,32,32,1);
-    wall.add_component<Sprite_component>("../res/sprite/star.png", false);
-    wall.add_component<Collision_component>("Wall");
-    wall.add_group(G_COLLIDER);
+    player::add_player();
+    enemy::add_player();
 }
 Game::~Game(){
     is_running = false;
@@ -82,29 +71,24 @@ void Game::main_loop() {
     }
 }
 
-auto& players(man.get_group(G_PLAYER));
-
+auto& players(Game::man.get_group(G_PLAYER));
+auto& enemies(Game::man.get_group(G_ENEMY));
 void Game::render() {
 
     SDL_RenderClear(ren);
     map_manager.draw();
     for(auto& t : players)
         t->draw();
+    for(auto& t : enemies)
+        t->draw();
     SDL_RenderPresent(ren);
 
 }
 
 void Game::update(){
-    man.refresh();
-    man.update();
-    if(Collision::is_collision(
-            player.get_component<Collision_component>().coll,
-            wall.get_component<Collision_component>().coll)
-            ){
-        player.get_component<Transform_component>().vel*=-1;
-        player.update();
-        player.get_component<Transform_component>().vel*=-1;
-    }
+    Game::man.refresh();
+    Game::man.update();
+
 }
 
 void Game::input(){

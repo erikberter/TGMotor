@@ -32,19 +32,19 @@ public:
             switch(Game::event.key.keysym.sym){
                 case SDLK_w:
                     transf->vel.y = -1;
-                    sprite->play("walk");
+                    sprite->play("walk_back");
                     break;
                 case SDLK_s:
                     transf->vel.y = 1;
-                    sprite->play("walk");
+                    sprite->play("walk_front");
                     break;
                 case SDLK_a:
                     transf->vel.x = -1;
-                    sprite->play("walk");
+                    sprite->play("walk_lateral");
                     break;
                 case SDLK_d:
                     transf->vel.x = 1;
-                    sprite->play("walk");
+                    sprite->play("walk_lateral");
                     break;
                 case SDLK_SPACE:
 
