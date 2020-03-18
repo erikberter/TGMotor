@@ -25,28 +25,20 @@ private:
 public:
     int animation_id = 0;
 
-    std::map<const char*, Animation> animations;
+    std::map<std::string, Animation> animations;
 
     Sprite_component() = default;
 
-    Sprite_component(const char* file_path, bool animated){
+    Sprite_component(std::string id, bool animated){
         is_animated = animated;
 
         if(is_animated){
-            Animation stand = Animation(0, 1, 100);
-            Animation walk_front = Animation(1, 4, 100);
-            Animation walk_lateral = Animation(2, 4, 100);
-            Animation walk_back = Animation(3, 4, 100);
-            animations.emplace("stand",stand);
-            animations.emplace("walk_front",walk_front);
-            animations.emplace("walk_lateral",walk_lateral);
-            animations.emplace("walk_back",walk_back);
-
+            animations = Game::ast_man.get_animation_map(id);
             play("stand");
         }
         speed = 1;
         animation_id = 0;
-        set_tex(file_path);
+        tex = Game::ast_man.get_texture(id);
     }
 
     Sprite_component(const char* file_path){

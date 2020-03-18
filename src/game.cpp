@@ -17,7 +17,8 @@ SDL_Event Game::event;
 std::vector<Collision_component*> Game::colliders;
 
 Game_map map;
-Manager Game::man;
+Entity_manager Game::e_man;
+Asset_manager Game::ast_man;
 Manager map_manager;
 
 
@@ -27,14 +28,15 @@ Game::Game(){
     SDL_Init(0);
     SDL_CreateWindowAndRenderer(WIDTH, HEIGH, 0, &win, &ren);
     SDL_SetWindowTitle(win, "Eralia");
+    Game::ast_man.load_default();
 
     map = Game_map("map_prueba.map");
 
     is_running = true;
     count = 0;
 
-    player::add_player();
     enemy::add_player();
+    player::add_player();
 }
 Game::~Game(){
     is_running = false;
@@ -51,12 +53,6 @@ void Game::main_loop() {
 
         last_frame = SDL_GetTicks();
 
-        if(last_frame >= last_time+1000){
-            last_time = last_frame;
-            frame_count=0;
-            count++;
-        }
-
         input();
         update();
         render();
@@ -66,28 +62,21 @@ void Game::main_loop() {
         // 17 = ceil( 1 s / 60 fps )
         if(timer_fps < 17)
             SDL_Delay(17-timer_fps);
-
-        if(count>300) is_running=false;
     }
 }
 
-auto& players(Game::man.get_group(G_PLAYER));
-auto& enemies(Game::man.get_group(G_ENEMY));
+
 void Game::render() {
 
     SDL_RenderClear(ren);
     map_manager.draw();
-    for(auto& t : players)
-        t->draw();
-    for(auto& t : enemies)
-        t->draw();
+    Game::e_man.draw();
     SDL_RenderPresent(ren);
 
 }
 
 void Game::update(){
-    Game::man.refresh();
-    Game::man.update();
+    Game::e_man.update();
 
 }
 

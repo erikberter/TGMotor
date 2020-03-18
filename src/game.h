@@ -11,15 +11,15 @@
 #include "../include/SDL2/SDL.h"
 #include "../include/SDL2/SDL_Image.h"
 #include "ECS/ECS.h"
+#include "ECS/entity_manager.h"
+#include "ECS/asset_manager.h"
 
 
 const int WIDTH = 800, HEIGH = 600;
 
 class Collision_component;
 
-enum group_labels : std::size_t {
-    G_MAP,G_PLAYER,G_ENEMY, G_COLLIDER
-};
+
 
 class Game{
 private:
@@ -31,7 +31,6 @@ private:
     int frame_count, timer_fps,last_frame;
 
 public:
-
     Game();
     ~Game();
 
@@ -46,7 +45,8 @@ public:
     static std::vector<Collision_component*> colliders;
     static void add_tile(int x, int y, int id);
 
-    static Manager man;
+    static Asset_manager ast_man;
+    static Entity_manager e_man;
 
 };
 

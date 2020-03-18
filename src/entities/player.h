@@ -12,7 +12,7 @@ class player{
 public:
 
     static void add_player() {
-        auto& player(Game::man.add_entity());
+        auto& player(Game::e_man.man.add_entity());
         player.add_component<Transform_component>();
         player.add_component<Sprite_component>("../res/sprite/mago1.png", true);
         player.add_component<Keyboard_controller>();

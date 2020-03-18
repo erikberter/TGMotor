@@ -11,11 +11,11 @@
 class enemy{
 public:
     static int enemy_id;
-    static void add_player() {
-        auto& player(Game::man.add_entity());
+    static void add_player(std::string id) {
+        auto& player(Game::e_man.man.add_entity());
         player.add_component<Transform_component>();
         player.add_component<Random_component>();
-        player.add_component<Sprite_component>("../res/sprite/mago_enemigo.png", true);
+        player.add_component<Sprite_component>(id, true);
         player.add_component<Collision_component>("Enemy" +std::to_string(enemy_id++));
 
         player.add_group(G_ENEMY);
