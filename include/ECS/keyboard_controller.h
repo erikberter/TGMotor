@@ -5,26 +5,25 @@
 #ifndef TEMPGAMEMOTOR_KEYBOARD_CONTROLLER_H
 #define TEMPGAMEMOTOR_KEYBOARD_CONTROLLER_H
 
-#include "../game.h"
+#include "game.h"
 #include "ECS.h"
 #include "Components/transform_component.h"
 
 #define MAX(a,b) (((a)>(b))?(a):(b))
 #define MIN(a,b) (((a)<(b))?(a):(b))
-class Keyboard_controller : public Component {
+class KeyboardController : public Component {
 public:
-    Transform_component *transf;
-    Sprite_component *sprite;
-    Keyboard_controller(){
-    };
+    TransformComponent *transf;
+    SpriteComponent *sprite;
+    KeyboardController() = default;
 
     void init() override{
-        if(!entity->has_component<Transform_component>())
-            entity->add_component<Transform_component>();
-        transf = &entity->get_component<Transform_component>();
-        if(!entity->has_component<Sprite_component>())
-            entity->add_component<Sprite_component>();
-        sprite = &entity->get_component<Sprite_component>();
+        if(!entity->has_component<TransformComponent>())
+            entity->add_component<TransformComponent>();
+        transf = &entity->get_component<TransformComponent>();
+        if(!entity->has_component<SpriteComponent>())
+            entity->add_component<SpriteComponent>();
+        sprite = &entity->get_component<SpriteComponent>();
     }
 
     void update() override{

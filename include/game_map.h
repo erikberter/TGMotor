@@ -9,7 +9,7 @@
 #include <SDL_render.h>
 #include "ECS/ECS.h"
 
-class Game_map {
+class GameMap {
 private:
     int map_width, map_height;
     int** map;
@@ -19,11 +19,11 @@ private:
 
 public:
 
-    Game_map();
-    Game_map(int** map_t, int map_width_t, int map_height_t);
-    Game_map(const char* map_sheet);
+    GameMap() = default;
+    GameMap(int** map_t, int map_width_t, int map_height_t);
+    GameMap(const char* map_sheet);
 
-    ~Game_map();
+    ~GameMap();
 
 
     void load_default_assets();

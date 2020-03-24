@@ -7,45 +7,55 @@
 
 #include "transform_component.h"
 #include "SDL.h"
-#include "../../texture_manager.h"
-#include "../animation.h"
-#include <map>
+#include "texture_manager.h"
+#include "ECS/animation.h"
 
-class Sprite_component : public Component{
+#include <map>
+#include <iostream>
+
+class SpriteComponent : public Component{
 private:
-    Transform_component *transf;
+
+    // Component Metadata
+
+    // Component Values
+
+    bool animated = false;
+    int animation_id = 0;
+    int frames = 0;
+    int speed = 1;
+
+    // Component Render
+    int x_desp = 0, y_desp = 0;
+
+    TransformComponent *transf;
     SDL_Texture *tex;
     SDL_Rect src,dest;
 
-    bool is_animated = false;
 
-    int frames = 0;
-    int speed = 100;
 
 public:
-    int animation_id = 0;
+
 
     std::map<std::string, Animation> animations;
 
-    Sprite_component() = default;
+    SpriteComponent() = default;
 
-    Sprite_component(std::string id, bool animated){
-        is_animated = animated;
-
-        if(is_animated){
-            animations = Game::ast_man.get_animation_map(id);
-            play("stand");
-        }
-        speed = 1;
-        animation_id = 0;
-        tex = Game::ast_man.get_texture(id);
-    }
-
-    Sprite_component(const char* file_path){
+    SpriteComponent(const char* file_path){
         set_tex(file_path);
     }
 
-    ~Sprite_component(){
+    SpriteComponent(std::string& sprite_name, Game* gApp, bool animated){
+        animated = animated;
+
+        if(animated){
+            animations = gApp->ast_man.get_animation_map(sprite_name);
+            play("stand");
+        }
+        tex = gApp->ast_man.get_texture(sprite_name);
+    }
+
+    ~SpriteComponent(){
         SDL_DestroyTexture(tex);
     }
 
@@ -54,9 +64,9 @@ public:
     }
 
     void init() override{
-        if(!entity->has_component<Transform_component>())
-            entity->add_component<Transform_component>();
-        transf = &entity->get_component<Transform_component>();
+        if(!entity->has_component<TransformComponent>())
+            entity->add_component<TransformComponent>();
+        transf = &entity->get_component<TransformComponent>();
 
         transf->scale = 2;
 
@@ -69,9 +79,9 @@ public:
         dest.w = dest.h = 50;
     }
 
-#include <iostream>
+
     void update() override{
-        if(is_animated)
+        if(animated)
             src.x = src.w* static_cast<int>((SDL_GetTicks() / speed) % frames);
 
         src.y = animation_id * transf->height;
@@ -90,6 +100,11 @@ public:
         frames = animations[anim_name].frames;
         animation_id = animations[anim_name].index;
         speed = animations[anim_name].speed;
+    }
+
+    void set_place(int x, int y){
+        x_desp = x;
+        y_desp = y;
     }
 };
 

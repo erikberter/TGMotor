@@ -7,12 +7,12 @@
 
 #include "SDL.h"
 
-class Collision_component;
+class CollisionComponent;
 
 class Collision{
 public:
     static bool is_collision(SDL_Rect r1, SDL_Rect r2);
-    static bool is_collision(const Collision_component& colA, const Collision_component& colB);
+    static bool is_collision(const CollisionComponent& colA, const CollisionComponent& colB);
 };
 
 #endif //TEMPGAMEMOTOR_COLLISION_H

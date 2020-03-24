@@ -14,11 +14,9 @@
 SDL_Renderer* Game::ren = nullptr;
 SDL_Event Game::event;
 
-std::vector<Collision_component*> Game::colliders;
+std::vector<CollisionComponent*> Game::colliders;
 
-Game_map map;
-Entity_manager Game::e_man;
-Asset_manager Game::ast_man;
+GameMap map;
 Manager map_manager;
 
 
@@ -28,22 +26,21 @@ Game::Game(){
     SDL_Init(0);
     SDL_CreateWindowAndRenderer(WIDTH, HEIGH, 0, &win, &ren);
     SDL_SetWindowTitle(win, "Eralia");
+    TextureManager::ren = &ren;
     Game::ast_man.load_default();
 
-    map = Game_map("map_prueba.map");
+    map = GameMap("map_prueba.map");
 
     is_running = true;
     count = 0;
 
-    enemy::add_player();
-    player::add_player();
+    player::add_player("mago1", this);
 }
 Game::~Game(){
     is_running = false;
     SDL_DestroyRenderer(ren);
     SDL_DestroyWindow(win);
     SDL_Quit();
-
 }
 
 void Game::main_loop() {
@@ -59,6 +56,7 @@ void Game::main_loop() {
 
         frame_count++;
         int timer_fps = SDL_GetTicks()-last_frame;
+        // TODO make FPS be a changeable option
         // 17 = ceil( 1 s / 60 fps )
         if(timer_fps < 17)
             SDL_Delay(17-timer_fps);
@@ -70,13 +68,13 @@ void Game::render() {
 
     SDL_RenderClear(ren);
     map_manager.draw();
-    Game::e_man.draw();
+    e_man.draw();
     SDL_RenderPresent(ren);
 
 }
 
 void Game::update(){
-    Game::e_man.update();
+    e_man.update();
 
 }
 
@@ -92,6 +90,7 @@ void Game::input(){
 }
 
 void Game::add_tile(int x, int y, int id){
+    // Tile is actually just a common game_entity but wrongly implemented
     auto& tile(map_manager.add_entity());
-    tile.add_component<Tile_component>(x,y,32,32, id);
+    tile.add_component<TileComponent>(x,y,32,32, id);
 }

@@ -6,27 +6,26 @@
 #define TEMPGAMEMOTOR_RANDOM_MOVEMENT_COMPONENT_H
 
 #include <SDL.h>
-#include "../ECS.h"
+#include "ECS/ECS.h"
 #include "transform_component.h"
 
-class Random_component : public Component {
+class RandomComponent : public Component {
 
 private:
 
-    Transform_component* transf;
+    TransformComponent* transf;
 public:
     SDL_Rect coll;
-    Random_component(){
-    }
+    RandomComponent() = default;
 
     void init() override{
-        if(!entity->has_component<Transform_component>())
-            entity->add_component<Transform_component>();
-        transf = &entity->get_component<Transform_component>();
-
+        if(!entity->has_component<TransformComponent>())
+            entity->add_component<TransformComponent>();
+        transf = &entity->get_component<TransformComponent>();
     }
 
     void update() override{
+        // TODO improve randon quality
         transf->vel.x = (rand()%3)-1;
         transf->vel.y = (rand()%3)-1;
     }

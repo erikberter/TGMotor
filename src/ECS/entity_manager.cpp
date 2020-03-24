@@ -2,26 +2,34 @@
 // Created by whiwho on 17/03/2020.
 //
 
-#include "entity_manager.h"
-#include "../entities/player.h"
+#include "ECS/entity_manager.h"
+#include "entities/player.h"
 
-#include "Components/collision_component.h"
+#include "ECS/Components/collision_component.h"
 
-Manager Entity_manager::man;
-
-Entity_manager::Entity_manager(){
+EntityManager::EntityManager(){
     loading_order.push_back(G_PLAYER);
     loading_order.push_back(G_ENEMY);
+}
 
-    player::add_player();
-
+void EntityManager::draw(){
+    for(std::size_t order_t : loading_order)
+        for(auto& t : EntityManager::man.get_group(order_t))
+            t->draw();
 
 }
 
-void Entity_manager::update(){
-    Entity_manager::man.refresh();
-    Entity_manager::man.update();
+void EntityManager::update(){
+    man.refresh();
+    man.update();
+    /*
     for(auto& enem : man.get_group(G_ENEMY))
         if(Collision::is_collision(enem->get_component<Collision_component>().coll,get_player().get_component<Collision_component>().coll ))
-            std::cout << " Han chocdo!!" << std::endl;
+            std::cout << " Han chocdo!!" << std::endl;*/
+}
+
+void EntityManager::set_place(int x, int y){
+    for(std::size_t order_t : loading_order)
+        for(auto& t : man.get_group(order_t))
+            t->get_component<SpriteComponent>().set_place(x,y);
 }

@@ -7,9 +7,7 @@
 #include "ECS/Components/tile_component.h"
 #include <fstream>
 
-Game_map::Game_map(){
-}
-Game_map::Game_map(int** map_t, int map_width_t, int map_height_t){
+GameMap::GameMap(int** map_t, int map_width_t, int map_height_t){
     map = new int*[map_height_t];
     for(int i = 0; i < map_height_t; i++){
         map[i] = new int[map_width_t];
@@ -24,18 +22,18 @@ Game_map::Game_map(int** map_t, int map_width_t, int map_height_t){
         delete[] map_t[i];
 }
 
-Game_map::Game_map(const char* map_sheet){
+GameMap::GameMap(const char* map_sheet){
     load_map(map_sheet);
 }
 
-Game_map::~Game_map(){
+GameMap::~GameMap(){
     //SDL_DestroyTexture(grass);
     //SDL_DestroyTexture(water);
 }
 
 
 
-void Game_map::load_map(const char* map_sheet){
+void GameMap::load_map(const char* map_sheet){
     std::string file_name = map_sheet;
     std::string file_path = "../res/maps/"+file_name;
     std::ifstream infile(file_path);
@@ -60,7 +58,7 @@ void Game_map::load_map(const char* map_sheet){
 
 #include <iostream>
 
-void Game_map::print_map(){
+void GameMap::print_map(){
     for(int i = 0; i < map_height; i++){
         for(int j = 0; j < map_width; j++)
             std::cout << map[i][j] << " ";
@@ -69,7 +67,7 @@ void Game_map::print_map(){
 }
 
 
-void Game_map::reshape_map(){
+void GameMap::reshape_map(){
     map = new int*[map_height];
     for(int i = 0; i < map_height; i++)
         map[i] = new int[map_width];

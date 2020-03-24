@@ -5,28 +5,25 @@
 #ifndef TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 #define TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 
-#include "../../game.h"
+#include "game.h"
 #include "SDL.h"
-#include "../ECS.h"
+#include "ECS/ECS.h"
 #include "transform_component.h"
 
 
-class Collision_component : public Component {
+class CollisionComponent : public Component {
 
 private:
-
-    std::string tag;
-    Transform_component* transf;
+    TransformComponent* transf;
 public:
     SDL_Rect coll;
-    Collision_component(std::string tag_t){
-        tag = tag_t;
-    }
+    CollisionComponent() = default;
 
     void init() override{
-        if(!entity->has_component<Transform_component>())
-            entity->add_component<Transform_component>();
-        transf = &entity->get_component<Transform_component>();
+        if(!entity->has_component<TransformComponent>())
+            entity->add_component<TransformComponent>();
+        transf = &entity->get_component<TransformComponent>();
+        // TODO abstract this
         Game::colliders.push_back(this);
 
     }

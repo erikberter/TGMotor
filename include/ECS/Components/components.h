@@ -7,7 +7,7 @@
 
 #include "sprite_component.h"
 #include "transform_component.h"
-#include "../keyboard_controller.h"
+#include "ECS/keyboard_controller.h"
 #include "collision_component.h"
 
 #endif //TEMPGAMEMOTOR_COMPONENTS_H

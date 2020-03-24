@@ -5,9 +5,10 @@
 #ifndef TEMPGAMEMOTOR_TRANSFORM_COMPONENT_H
 #define TEMPGAMEMOTOR_TRANSFORM_COMPONENT_H
 
-#include "../ECS.h"
-#include "../../vector2d.h"
-class Transform_component : public Component{
+#include "ECS/ECS.h"
+#include "vector2d.h"
+
+class TransformComponent : public Component{
 
 public:
     Vector2D<float> pos;
@@ -18,18 +19,18 @@ public:
 
     float speed = 1;
 
-    Transform_component(){
+    TransformComponent(){
         pos.Zero();
         vel.Zero();
     }
 
-    Transform_component(float x, float y){
+    TransformComponent(float x, float y){
         pos.x = x;
         pos.y = y;
         vel.Zero();
     }
 
-    Transform_component(float x, float y, int h, int w, int scale_t){
+    TransformComponent(float x, float y, int h, int w, int scale_t){
         pos.x = x;
         pos.y = y;
         height = h;
@@ -38,13 +39,8 @@ public:
         vel.Zero();
     }
 
-    float x(){
-        return pos.x;
-    }
-
-    float y(){
-        return pos.y;
-    }
+    float x(){return pos.x;}
+    float y(){return pos.y;}
 
     void init() override{
         vel.Zero();

@@ -4,8 +4,6 @@
 
 #include "entity.h"
 
-
-
 Entity_t::Entity_t(const char* texture_sheet){
     coord_y = coord_x = 0;
     SDL_Rect init_src, init_dst;

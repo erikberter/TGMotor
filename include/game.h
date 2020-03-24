@@ -8,8 +8,8 @@
 #include <iostream>
 #include <vector>
 
-#include "../include/SDL2/SDL.h"
-#include "../include/SDL2/SDL_Image.h"
+#include "SDL.h"
+#include "SDL_Image.h"
 #include "ECS/ECS.h"
 #include "ECS/entity_manager.h"
 #include "ECS/asset_manager.h"
@@ -17,7 +17,7 @@
 
 const int WIDTH = 800, HEIGH = 600;
 
-class Collision_component;
+class CollisionComponent;
 
 
 
@@ -42,11 +42,11 @@ public:
 
     static SDL_Renderer *ren;
     static SDL_Event event;
-    static std::vector<Collision_component*> colliders;
+    static std::vector<CollisionComponent*> colliders;
     static void add_tile(int x, int y, int id);
 
-    static Asset_manager ast_man;
-    static Entity_manager e_man;
+    AssetManager ast_man;
+    EntityManager e_man;
 
 };
 

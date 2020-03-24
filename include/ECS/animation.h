@@ -12,7 +12,7 @@ public:
 
     int index, frames, speed;
 
-    Animation(){}
+    Animation() : index{1}, frames{1}, speed{10}{};
 
     Animation(int index_t, int frames_t, int speed_t){
         index = index_t;
