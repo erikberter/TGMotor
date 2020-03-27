@@ -17,14 +17,16 @@ private:
     TransformComponent* transf;
 public:
     SDL_Rect coll;
-    CollisionComponent() = default;
+    CollisionComponent(Game* gApp){
+    gApp->colliders.push_back(this);
+
+    };
 
     void init() override{
         if(!entity->has_component<TransformComponent>())
             entity->add_component<TransformComponent>();
         transf = &entity->get_component<TransformComponent>();
-        // TODO abstract this
-        Game::colliders.push_back(this);
+
 
     }
 

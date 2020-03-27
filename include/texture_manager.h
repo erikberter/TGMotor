@@ -11,10 +11,9 @@
 #include "game.h"
 
 class TextureManager{
-public :
-    static SDL_Renderer **ren;
-    static SDL_Texture* LoadTexture(const char* file_name);
-    static void draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest);
+public:
+    static SDL_Texture* LoadTexture(SDL_Renderer* ren, const char* file_name);
+    static void draw(SDL_Renderer* ren, SDL_Texture* tex, SDL_Rect src, SDL_Rect dest);
 };
 
 #endif //TEMPGAMEMOTOR_TEXTURE_MANAGER_H

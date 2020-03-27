@@ -10,7 +10,7 @@
 #include "physics/collision.h"
 
 enum group_labels : std::size_t {
-    G_PLAYER,G_ENEMY, G_COLLIDER
+    G_PLAYER,G_ENEMY, G_COLLIDER, G_TILES
 };
 
 class EntityManager {

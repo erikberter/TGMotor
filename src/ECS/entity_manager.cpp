@@ -3,13 +3,14 @@
 //
 
 #include "ECS/entity_manager.h"
-#include "entities/player.h"
-
+#include "ECS/Components/sprite_component.h"
 #include "ECS/Components/collision_component.h"
+
 
 EntityManager::EntityManager(){
     loading_order.push_back(G_PLAYER);
     loading_order.push_back(G_ENEMY);
+    loading_order.push_back(G_TILES);
 }
 
 void EntityManager::draw(){

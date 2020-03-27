@@ -2,39 +2,30 @@
 // Created by whiwho on 14/03/2020.
 //
 
+#include <texture_manager.h>
 #include "game.h"
 #include "game_map.h"
 #include "ECS/ECS.h"
-#include "ECS/Components/components.h"
-#include "ECS/Components/tile_component.h"
 
-#include "entities/player.h"
-#include "entities/enemy.h"
 
-SDL_Renderer* Game::ren = nullptr;
 SDL_Event Game::event;
-
-std::vector<CollisionComponent*> Game::colliders;
 
 GameMap map;
 Manager map_manager;
-
-
 
 
 Game::Game(){
     SDL_Init(0);
     SDL_CreateWindowAndRenderer(WIDTH, HEIGH, 0, &win, &ren);
     SDL_SetWindowTitle(win, "Eralia");
-    TextureManager::ren = &ren;
-    Game::ast_man.load_default();
-
-    map = GameMap("map_prueba.map");
-
+    std::cout << "H5" << std::endl;
+    ast_man.load_default(ren);
+    std::cout << "H6" << std::endl;
+    map = GameMap("map_prueba", this);
+    std::cout << "H7" << std::endl;
     is_running = true;
     count = 0;
 
-    player::add_player("mago1", this);
 }
 Game::~Game(){
     is_running = false;
@@ -44,7 +35,6 @@ Game::~Game(){
 }
 
 void Game::main_loop() {
-
     static int last_time=0;
     while(is_running){
 
@@ -65,7 +55,6 @@ void Game::main_loop() {
 
 
 void Game::render() {
-
     SDL_RenderClear(ren);
     map_manager.draw();
     e_man.draw();
@@ -87,10 +76,4 @@ void Game::input(){
         default:
             break;
     }
-}
-
-void Game::add_tile(int x, int y, int id){
-    // Tile is actually just a common game_entity but wrongly implemented
-    auto& tile(map_manager.add_entity());
-    tile.add_component<TileComponent>(x,y,32,32, id);
 }

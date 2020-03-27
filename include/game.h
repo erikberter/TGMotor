@@ -29,7 +29,6 @@ private:
     int count;
 
     int frame_count, timer_fps,last_frame;
-
 public:
     Game();
     ~Game();
@@ -40,10 +39,9 @@ public:
     void update();
     void render();
 
-    static SDL_Renderer *ren;
+    SDL_Renderer *ren;
     static SDL_Event event;
-    static std::vector<CollisionComponent*> colliders;
-    static void add_tile(int x, int y, int id);
+    std::vector<CollisionComponent*> colliders;
 
     AssetManager ast_man;
     EntityManager e_man;

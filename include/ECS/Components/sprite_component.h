@@ -31,21 +31,21 @@ private:
     TransformComponent *transf;
     SDL_Texture *tex;
     SDL_Rect src,dest;
-
-
+    Game* gApp;
 
 public:
-
 
     std::map<std::string, Animation> animations;
 
     SpriteComponent() = default;
 
-    SpriteComponent(const char* file_path){
+    SpriteComponent(const char* file_path, Game* gApp_t){
+        gApp = gApp_t;
         set_tex(file_path);
     }
 
-    SpriteComponent(std::string& sprite_name, Game* gApp, bool animated){
+    SpriteComponent(std::string& sprite_name, Game* gApp_t, bool animated){
+        gApp = gApp_t;
         animated = animated;
 
         if(animated){
@@ -60,7 +60,7 @@ public:
     }
 
     void set_tex(const char* file_path){
-        tex = TextureManager::LoadTexture(file_path);
+        tex = TextureManager::LoadTexture(gApp->ren, file_path);
     }
 
     void init() override{
@@ -68,7 +68,7 @@ public:
             entity->add_component<TransformComponent>();
         transf = &entity->get_component<TransformComponent>();
 
-        transf->scale = 2;
+        transf->scale = 1;
 
         src.x = src.y = 0;
         src.w = transf->width;
@@ -93,7 +93,7 @@ public:
     }
 
     void draw() override{
-        TextureManager::draw(tex, src,dest);
+        TextureManager::draw(gApp->ren, tex, src,dest);
     }
 
     void play(const char* anim_name){

@@ -6,7 +6,7 @@
 #include "texture_manager.h"
 #include <fstream>
 
-void AssetManager::load_default(){
+void AssetManager::load_default(SDL_Renderer* ren){
 
     std::ifstream asset_list_f("../res/visual/asset_list");
     int n_asset;
@@ -14,17 +14,17 @@ void AssetManager::load_default(){
     std::string asset_id;
     for(int i = 0; i < n_asset; i++){
         asset_list_f >> asset_id;
-        add_texture(asset_id, ("../res/visual/assets/"+asset_id + ".png").c_str());
+        add_texture(ren, asset_id, ("../res/visual/assets/"+asset_id + ".png").c_str());
         add_animation(asset_id, ("../res/visual/assets/"+asset_id + ".lst").c_str());
     }
     asset_list_f.close();
 
 }
 
-void AssetManager::add_texture(std::string& id, const char* path){
-    texture_map.emplace(id, TextureManager::LoadTexture(path));
+void AssetManager::add_texture(SDL_Renderer* tex, std::string& id, const char* path){
+    texture_map.emplace(id, TextureManager::LoadTexture(tex, path));
 }
-SDL_Texture* AssetManager::get_texture(std::string& id){
+SDL_Texture* AssetManager::get_texture(std::string id){
     return texture_map[id];
 }
 
