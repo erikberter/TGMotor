@@ -5,11 +5,13 @@
 #ifndef TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 #define TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 
-#include "game.h"
 #include "SDL.h"
 #include "ECS/ECS.h"
 #include "transform_component.h"
 
+namespace ComponentHelper{
+    extern ComponentHelper::ComponentType COLLISION;
+}
 
 class CollisionComponent : public Component {
 
@@ -26,9 +28,9 @@ public:
     }
 
     void init() override{
-        if(!entity->has_component("transform"))
-            entity->add_component("transform");
-        transf = dynamic_cast<TransformComponent*>(entity->get_component("transform"));
+        if(!entity->has_component(ComponentHelper::TRANSFORM))
+            entity->add_component(ComponentHelper::TRANSFORM);
+        transf = dynamic_cast<TransformComponent*>(entity->get_component(ComponentHelper::TRANSFORM));
     }
 
     void update() override{

@@ -9,7 +9,7 @@
 #include <ECS/asset_manager.h>
 
 namespace GameRender{
-    extern SDL_Renderer **ren;
+    extern SDL_Renderer *ren;
     extern AssetManager ast_man;
 }
 

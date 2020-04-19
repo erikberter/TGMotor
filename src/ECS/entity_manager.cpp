@@ -4,7 +4,6 @@
 
 #include "ECS/entity_manager.h"
 #include "ECS/Components/sprite_component.h"
-#include "ECS/Components/collision_component.h"
 
 
 EntityManager::EntityManager(){
@@ -28,6 +27,6 @@ void EntityManager::update(){
 void EntityManager::set_place(int x, int y){
     for(std::size_t order_t : loading_order)
         for(auto& t : man.get_group(order_t))
-            dynamic_cast<SpriteComponent*>(t->get_component("sprite"))->set_place(x,y);
+            dynamic_cast<SpriteComponent*>(t->get_component(ComponentHelper::SPRITE))->set_place(x,y);
 
 }

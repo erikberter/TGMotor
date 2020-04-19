@@ -7,20 +7,17 @@
 
 #include <string>
 
-
 namespace constants{
 
-    const std::string ASSET_REGEX_PNG = "(^(?!._).*\\.png$)";
-    const std::string ASSET_REGEX_LST = "(^(?!._).*\\.lst$)";
-    const std::string ASSET_REGEX_STG = "(^(?!._).*\\.stg$)";
-    const std::string ASSET_REGEX_PER = "(^(?!._).*\\.per$)";
+    extern const char* ASSET_REGEX_PNG;
+    extern const char* ASSET_REGEX_LST;
+    extern const char* ASSET_REGEX_STG;
+    extern const char* ASSET_REGEX_PER;
 
-    inline std::string get_default_file_regex(std::string end_p){
-        return "(^(?!._).*\\."+end_p+"$)";
+    inline const char* get_default_file_regex(char* end_p){
+        std::string new_file_regex = "(^(?!._).*\\."+ static_cast<std::string>(end_p)+"$)";
+        return new_file_regex.c_str();
     }
-
-
-
 }
 
 #endif //GAME_MOTOR_G_CONSTANTS_H

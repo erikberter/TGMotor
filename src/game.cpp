@@ -8,24 +8,33 @@
 #include <renderer.h>
 
 #include "utils/files.h"
+#include <plog/Log.h>
 
 
 
-
-Game::Game(std::string config_file_path){
+Game::Game(const std::string& config_file_path){
+    plog::init(plog::debug, "logs/running.log");
     read_config(config_file_path);
+    running = false;
+    count  = 0;
+    frame_count = timer_fps= last_frame = 0u;
 }
 
-void Game::load_defs(std::vector<std::string> files){
-    SDL_Renderer **ren = GameRender::ren;
-    // First load the default asset file
-    load_components();
-    GameRender::ast_man.load_resources(ren, "../res/assets/");
+
+
+void Game::load_defs(std::vector<std::string> *files){
+    load_default_components();
+    PLOG_DEBUG << "Loading Assets";
+    GameRender::ast_man.load_resources(GameRender::ren, "../res/assets/");
+    PLOG_DEBUG << "Loading Entities";
     load_g_entities("../res/entities/");
+    PLOG_DEBUG << "Loading Stages";
     load_stages("../res/stage/");
+
+    // TODO Implement Extra resources loading
 }
 
-void Game::set_stage(std::string stage_t){
+void Game::set_stage(const std::string& stage_t){
     e_man.man.clear();
     if(!stages.count(stage_t))
         return; // TODO Add error in case no stage found
@@ -38,7 +47,7 @@ void Game::set_stage(std::string stage_t){
             if(!c.value().contains("components"))
                 continue;
             for(auto& c_comp : c.value()["components"].items())
-                temp_ent.add_component(static_cast<std::string>(c_comp.key()), &c_comp.value());
+                temp_ent.add_component(ComponentMapSCT[c_comp.key()], &c_comp.value());
         }
     }
 }
@@ -48,7 +57,6 @@ Game::~Game(){
 
 void Game::main_loop() {
     running = true;
-    static int last_time=0;
     while(running){
 
         last_frame = SDL_GetTicks();
@@ -58,7 +66,7 @@ void Game::main_loop() {
         render();
 
         frame_count++;
-        int timer_fps = SDL_GetTicks()-last_frame;
+        timer_fps = SDL_GetTicks()-last_frame;
         // TODO make FPS be a changeable option
         // 17 = ceil( 1 s / 60 fps )
         if(timer_fps < 17)
@@ -68,9 +76,9 @@ void Game::main_loop() {
 
 
 void Game::render() {
-    SDL_RenderClear(*GameRender::ren);
+    SDL_RenderClear(GameRender::ren);
     e_man.draw();
-    SDL_RenderPresent(*GameRender::ren);
+    SDL_RenderPresent(GameRender::ren);
 
 }
 
@@ -90,33 +98,30 @@ void Game::input(){
     }
 }
 
-void Game::load_g_entities(std::string path){
-    std::string stg_regex = constants::ASSET_REGEX_PER;
+void Game::load_g_entities(const std::string& path){
+    const char* stg_regex = constants::ASSET_REGEX_PER;
     std::vector<G_Entity> *g_ent_vec_p = &g_entities;
 
-    std::function<void(std::string, std::string)> add_stage= [g_ent_vec_p](std::string a, std::string b){
+    sp_str::function_v_ss add_stage= [g_ent_vec_p](const std::string& a, const std::string& b){
         g_ent_vec_p->push_back(G_Entity(b));
     };
 
-    std::vector<std::pair<std::string, std::function< void(std::string, std::string)> > > vec_t = {std::make_pair(stg_regex, add_stage)};
+    sp_str::functional_vector vec_t = {std::make_pair(stg_regex, add_stage)};
     file_rec(path, vec_t);
 }
 
-void Game::load_stages(std::string path){
-    std::string stg_regex = constants::ASSET_REGEX_STG;
+void Game::load_stages(const std::string& path){
     std::map<std::string, json> *stage_vec_p = &stages;
 
-    std::function<void(std::string, std::string)> add_stage= [stage_vec_p](std::string a, std::string b){
-
+    sp_str::function_v_ss add_stage = [stage_vec_p](const std::string& a,const std::string& b){
         stage_vec_p->emplace(a, get_json(b));
     };
 
-    std::vector<std::pair<std::string, std::function< void(std::string, std::string)> > > vec_t = {std::make_pair(stg_regex, add_stage)};
+    sp_str::functional_vector vec_t = {std::make_pair(constants::ASSET_REGEX_STG, add_stage)};
     file_rec(path, vec_t);
 }
 
 
 
-void Game::read_config(std::string config_file_path){
-    return;
+void Game::read_config(const std::string& config_file_path){
 }

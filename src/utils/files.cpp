@@ -5,7 +5,7 @@
 #include <fstream>
 #include "utils/files.h"
 
-void file_rec(std::string path, std::vector<std::pair<std::string, std::function<void(std::string, std::string)> > > codes){
+void file_rec(const std::string& path, const sp_str::functional_vector& codes){
     DIR *dir;
     struct dirent *ent;
     // TODO Set an error here
@@ -20,16 +20,15 @@ void file_rec(std::string path, std::vector<std::pair<std::string, std::function
             std::string file_name = ent->d_name;
             if(file_name.length() < 4) continue;
             for(unsigned short i = 0; i < 4; i++) file_name.pop_back();
-
-            for(int i = 0; i < codes.size(); i++)
-                if(std::regex_match(static_cast<std::string>(ent->d_name), std::regex(codes[i].first)))
-            codes[i].second(file_name, path+ent->d_name);
+            for(auto& code : codes)
+                if(std::regex_match(static_cast<std::string>(ent->d_name), std::regex(code.first)))
+            code.second(file_name, path+ent->d_name);
         }
     }
     closedir (dir);
 }
 
-json get_json(std::string path){
+json get_json(const std::string& path){
     std::ifstream f_file(path);
     // TODO Throw Error
     if(!f_file.is_open()) return nullptr;

@@ -8,6 +8,9 @@
 #include "ECS/ECS.h"
 #include "vector2d.h"
 
+namespace ComponentHelper {
+    extern ComponentHelper::ComponentType TRANSFORM;
+}
 class TransformComponent : public Component{
 public:
     Vector2D<float> pos;

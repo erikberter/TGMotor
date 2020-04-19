@@ -1,0 +1,35 @@
+﻿2020-04-19 18:20:29.968 DEBUG [15876] [main@16] SDL was initialized
+2020-04-19 18:20:29.988 DEBUG [15876] [main@19] Window created
+2020-04-19 18:20:30.114 DEBUG [15876] [main@21] Renderer created
+2020-04-19 18:20:30.114 DEBUG [15876] [main@25] Game created
+2020-04-19 18:20:30.118 DEBUG [15876] [main@27] Default game resources loaded
+2020-04-19 18:20:31.494 DEBUG [15876] [main@32] Game loop ended
+2020-04-19 18:20:31.509 DEBUG [15876] [main@38] SDL_Quit
+2020-04-19 18:22:51.571 DEBUG [11536] [main@16] SDL was initialized
+2020-04-19 18:22:51.594 DEBUG [11536] [main@19] Window created
+2020-04-19 18:22:51.715 DEBUG [11536] [main@21] Renderer created
+2020-04-19 18:22:51.715 DEBUG [11536] [main@25] Game created
+2020-04-19 18:22:51.715 DEBUG [11536] [Game::load_defs@21] 	Loading Assets
+2020-04-19 18:22:51.717 DEBUG [11536] [Game::load_defs@23] 	Loading Entities
+2020-04-19 18:22:51.718 DEBUG [11536] [Game::load_defs@25] 	Loading Stages
+2020-04-19 18:22:51.718 DEBUG [11536] [main@27] Default game resources loaded
+2020-04-19 18:22:53.054 DEBUG [11536] [main@32] Game loop ended
+2020-04-19 18:22:53.067 DEBUG [11536] [main@38] SDL_Quit
+2020-04-19 18:39:37.701 DEBUG [9068] [Game::load_defs@27] Loading Assets
+2020-04-19 18:39:37.703 DEBUG [9068] [Game::load_defs@29] Loading Entities
+2020-04-19 18:39:37.703 DEBUG [9068] [Game::load_defs@31] Loading Stages
+2020-04-19 18:43:12.893 DEBUG [3920] [Game::load_defs@27] Loading Assets
+2020-04-19 18:43:12.894 DEBUG [3920] [Game::load_defs@29] Loading Entities
+2020-04-19 18:43:12.894 DEBUG [3920] [Game::load_defs@31] Loading Stages
+2020-04-19 21:56:50.746 DEBUG [4104] [Game::load_defs@27] Loading Assets
+2020-04-19 21:56:50.770 DEBUG [4104] [Game::load_defs@29] Loading Entities
+2020-04-19 21:56:50.773 DEBUG [4104] [Game::load_defs@31] Loading Stages
+2020-04-19 22:03:02.302 DEBUG [10940] [Game::load_defs@27] Loading Assets
+2020-04-19 22:03:02.304 DEBUG [10940] [Game::load_defs@29] Loading Entities
+2020-04-19 22:03:02.304 DEBUG [10940] [Game::load_defs@31] Loading Stages
+2020-04-19 22:24:59.483 DEBUG [2596] [Game::load_defs@27] Loading Assets
+2020-04-19 22:24:59.485 DEBUG [2596] [Game::load_defs@29] Loading Entities
+2020-04-19 22:24:59.486 DEBUG [2596] [Game::load_defs@31] Loading Stages
+2020-04-19 22:43:28.407 DEBUG [260] [Game::load_defs@27] Loading Assets
+2020-04-19 22:43:28.409 DEBUG [260] [Game::load_defs@29] Loading Entities
+2020-04-19 22:43:28.410 DEBUG [260] [Game::load_defs@31] Loading Stages

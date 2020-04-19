@@ -8,21 +8,16 @@
 #include <fstream>
 #include "json.hpp"
 
-using json = nlohmann::json;
-
-
 class Stage{
 private:
-
-
-    json stage_vals = nullptr;
+    nlohmann::json stage_vals = nullptr;
 
     std::string stage_id, stage_path;
 
 public:
     Stage() : stage_vals{nullptr}, stage_id{""}, stage_path{""}{};
     Stage(std::string stage_id_t, std::string stage_path_t) : stage_vals{nullptr},
-            stage_id{stage_id_t}, stage_path{stage_path_t}{};
+            stage_id{std::move(stage_id_t)}, stage_path{std::move(stage_path_t)}{};
 
     void load_stage(){
         if(stage_vals != nullptr && !stage_path.empty()){
@@ -31,7 +26,7 @@ public:
         }
     }
 
-    json get_json(){
+    nlohmann::json get_json(){
         return stage_vals;
     }
 

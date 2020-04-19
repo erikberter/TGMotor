@@ -24,22 +24,29 @@ constexpr std::size_t max_groups        = 32;
 using json = nlohmann::json;
 
 namespace ComponentHelper{
-    typedef std::map<std::string, std::function<Component*()>> map_type;
-    typedef std::map<std::string,int> map_si;
+
+    typedef struct {
+        std::function<Component*()> creator;
+    } ComponentBlock;
+    typedef  unsigned int  ComponentType;
+
+    typedef std::map<std::string, ComponentType > map_sct;
+    typedef std::map<ComponentType, ComponentBlock> map_type;
     static map_type ComponentMap;
-    static map_si TypeIDMap;
+    static map_sct ComponentMapSCT;
+
 };
 
 class Component{
 public:
-    Entity* entity;
+    Entity* entity = nullptr;
 
     virtual void init(){};
     virtual void update(){};
     virtual void draw(){};
     virtual void set_data(json *data){};
 
-    virtual ~Component(){};
+    virtual ~Component() = default;
 };
 
 class Entity{
@@ -48,7 +55,7 @@ private :
     bool active = true;
     std::vector<Component* > components;
 
-    std::map<std::string, Component*> component_array;
+    std::map<ComponentHelper::ComponentType, Component*> component_array;
     std::bitset<max_components> component_bitset;
     std::bitset<max_groups> group_bitset;
 public:
@@ -74,33 +81,33 @@ public:
         group_bitset[group_t] = false;
     }
 
-    bool has_component(std::string comp_name) const{
-        return component_bitset[ComponentHelper::TypeIDMap[comp_name]];
+    bool has_component(ComponentHelper::ComponentType c_type) const{
+        return component_bitset[c_type];
     }
 
-    void add_component(std::string comp_name, json *args){
+    void add_component(ComponentHelper::ComponentType c_type, json *args){
         Component* c;
-        if(!has_component(comp_name)){
-            c = ComponentHelper::ComponentMap[comp_name]();
+        if(!has_component(c_type)){
+            c = ComponentHelper::ComponentMap[c_type].creator();
 
             c->entity = this;
             components.push_back(c);
 
-            component_array[comp_name] = c;
-            component_bitset[ComponentHelper::TypeIDMap[comp_name]] = true;
+            component_array[c_type] = c;
+            component_bitset[c_type] = true;
 
             c->init();
         }else
-            c = component_array[comp_name];
+            c = component_array[c_type];
 
         c->set_data(args);
     }
-    void add_component(std::string comp_name){
-        add_component(comp_name, new json("{}"));
+    void add_component(ComponentHelper::ComponentType c_type){
+        add_component(c_type, new json("{}"));
     }
 
-    Component* get_component(std::string comp_name){
-        Component* ptr = component_array[comp_name];
+    Component* get_component(ComponentHelper::ComponentType c_type){
+        Component* ptr = component_array[c_type];
         return ptr;
     }
 };
