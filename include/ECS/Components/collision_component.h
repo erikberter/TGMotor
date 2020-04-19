@@ -17,17 +17,18 @@ private:
     TransformComponent* transf;
 public:
     SDL_Rect coll;
-    CollisionComponent(Game* gApp){
-    gApp->colliders.push_back(this);
-
+    CollisionComponent(){
+        //gApp->colliders.push_back(this);
     };
 
+    void set_data(json *data) override{
+        return;
+    }
+
     void init() override{
-        if(!entity->has_component<TransformComponent>())
-            entity->add_component<TransformComponent>();
-        transf = &entity->get_component<TransformComponent>();
-
-
+        if(!entity->has_component("transform"))
+            entity->add_component("transform");
+        transf = dynamic_cast<TransformComponent*>(entity->get_component("transform"));
     }
 
     void update() override{
@@ -36,7 +37,6 @@ public:
         coll.w = transf->width*transf->scale;
         coll.h = transf->height*transf->scale;
     }
-
 
 };
 

@@ -10,7 +10,7 @@
 #include "physics/collision.h"
 
 enum group_labels : std::size_t {
-    G_PLAYER,G_ENEMY, G_COLLIDER, G_TILES
+    G_PLAYER=1,G_ENEMY=2, G_COLLIDER=3, G_TILES=4
 };
 
 class EntityManager {
@@ -30,7 +30,7 @@ public:
 
     void set_place(int x, int y);
 
-
+    void add_to_order(std::vector<std::size_t> order_t){loading_order = order_t;}
 };
 
 

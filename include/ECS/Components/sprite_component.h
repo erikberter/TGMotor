@@ -12,6 +12,10 @@
 
 #include <map>
 #include <iostream>
+#include <renderer.h>
+
+#include "game.h"
+
 
 class SpriteComponent : public Component{
 private:
@@ -31,7 +35,6 @@ private:
     TransformComponent *transf;
     SDL_Texture *tex;
     SDL_Rect src,dest;
-    Game* gApp;
 
 public:
 
@@ -39,35 +42,47 @@ public:
 
     SpriteComponent() = default;
 
-    SpriteComponent(const char* file_path, Game* gApp_t){
-        gApp = gApp_t;
+    SpriteComponent(const char* file_path){
         set_tex(file_path);
     }
 
     SpriteComponent(std::string& sprite_name, Game* gApp_t, bool animated){
-        gApp = gApp_t;
         animated = animated;
 
         if(animated){
-            animations = gApp->ast_man.get_animation_map(sprite_name);
+            animations = GameRender::ast_man.get_animation_map(sprite_name);
             play("stand");
         }
-        tex = gApp->ast_man.get_texture(sprite_name);
+        tex = GameRender::ast_man.get_texture(sprite_name);
     }
 
     ~SpriteComponent(){
         SDL_DestroyTexture(tex);
     }
 
+
+    void set_data(json *data) override{
+        if(data->contains("animated")) animated = (*data)["animated"];
+        else animated = false;
+
+        tex = GameRender::ast_man.get_texture((*data)["sprite_name"]);
+
+        if(animated){
+            animations = GameRender::ast_man.get_animation_map((*data)["sprite_name"]);
+            play("stand");
+        }
+    }
+
     void set_tex(const char* file_path){
-        tex = TextureManager::LoadTexture(gApp->ren, file_path);
+        tex = TextureManager::LoadTexture(GameRender::ren, file_path);
     }
 
     void init() override{
-        if(!entity->has_component<TransformComponent>())
-            entity->add_component<TransformComponent>();
-        transf = &entity->get_component<TransformComponent>();
+        if(!entity->has_component("transform"))
+            entity->add_component("transform");
+        Component* cmp = entity->get_component("transform");
 
+        transf = dynamic_cast<TransformComponent*>(cmp);
         transf->scale = 1;
 
         src.x = src.y = 0;
@@ -93,7 +108,7 @@ public:
     }
 
     void draw() override{
-        TextureManager::draw(gApp->ren, tex, src,dest);
+        TextureManager::draw(GameRender::ren, tex, src,dest);
     }
 
     void play(const char* anim_name){

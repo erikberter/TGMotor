@@ -10,6 +10,7 @@
 #include "ECS.h"
 #include <SDL.h>
 #include "animation.h"
+#include <regex>
 
 class AssetManager {
 
@@ -20,13 +21,13 @@ public:
     AssetManager() = default;
     ~AssetManager() = default;
 
-    void load_default(SDL_Renderer* ren);
+    void load_resources(SDL_Renderer** ren, std::string path);
 
-    void add_texture(SDL_Renderer* tex, std::string& id, const char* path);
+    void add_texture(SDL_Renderer** tex, std::string id, const char* path);
     SDL_Texture* get_texture(std::string id);
 
-    void add_animation(std::string& id, const char* path);
-    std::map<std::string, Animation> get_animation_map(std::string& id);
+    void add_animation(std::string id, const char* path);
+    std::map<std::string, Animation> get_animation_map(std::string id);
 };
 
 

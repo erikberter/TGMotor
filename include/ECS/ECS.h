@@ -12,22 +12,23 @@
 #include <bitset>
 #include <array>
 
+#include <json.hpp>
+
 class Component;
 class Entity;
 class Manager;
 
-inline std::size_t get_new_component_type_id(){
-    static std::size_t  last_id = 0u;
-    return last_id++;
-}
-
-template <typename T> inline std::size_t get_component_type_id() noexcept {
-    static std::size_t type_id = get_new_component_type_id();
-    return type_id;
-}
-
 constexpr std::size_t max_components    = 32;
 constexpr std::size_t max_groups        = 32;
+
+using json = nlohmann::json;
+
+namespace ComponentHelper{
+    typedef std::map<std::string, std::function<Component*()>> map_type;
+    typedef std::map<std::string,int> map_si;
+    static map_type ComponentMap;
+    static map_si TypeIDMap;
+};
 
 class Component{
 public:
@@ -36,6 +37,7 @@ public:
     virtual void init(){};
     virtual void update(){};
     virtual void draw(){};
+    virtual void set_data(json *data){};
 
     virtual ~Component(){};
 };
@@ -44,9 +46,9 @@ class Entity{
 private :
     Manager& manager;
     bool active = true;
-    std::vector<std::unique_ptr<Component> > components;
+    std::vector<Component* > components;
 
-    std::array<Component*, max_components> component_array;
+    std::map<std::string, Component*> component_array;
     std::bitset<max_components> component_bitset;
     std::bitset<max_groups> group_bitset;
 public:
@@ -59,6 +61,7 @@ public:
     void draw(){
         for(auto& c : components) c->draw();
     }
+
     bool is_active(){return active;};
     void destroy(){active = false;};
 
@@ -71,27 +74,34 @@ public:
         group_bitset[group_t] = false;
     }
 
-    template <typename T> bool has_component() const{
-        return component_bitset[get_component_type_id<T>()];
+    bool has_component(std::string comp_name) const{
+        return component_bitset[ComponentHelper::TypeIDMap[comp_name]];
     }
 
-    template<typename T, typename... TArgs> T& add_component(TArgs&&... mArgs){
-        T* c(new T(std::forward<TArgs>(mArgs)...));
-        c->entity = this;
-        std::unique_ptr<Component> uPtr{c};
-        components.emplace_back(std::move(uPtr));
+    void add_component(std::string comp_name, json *args){
+        Component* c;
+        if(!has_component(comp_name)){
+            c = ComponentHelper::ComponentMap[comp_name]();
 
-        component_array[get_component_type_id<T>()] = c;
-        component_bitset[get_component_type_id<T>()] = true;
+            c->entity = this;
+            components.push_back(c);
 
-        c->init();
-        return *c;
+            component_array[comp_name] = c;
+            component_bitset[ComponentHelper::TypeIDMap[comp_name]] = true;
+
+            c->init();
+        }else
+            c = component_array[comp_name];
+
+        c->set_data(args);
+    }
+    void add_component(std::string comp_name){
+        add_component(comp_name, new json("{}"));
     }
 
-    template<typename T> T& get_component() const {
-        auto ptr(component_array[get_component_type_id<T>()]);
-        return *static_cast<T *>(ptr);
-
+    Component* get_component(std::string comp_name){
+        Component* ptr = component_array[comp_name];
+        return ptr;
     }
 };
 
@@ -122,6 +132,12 @@ public:
         }), std::end(entities));
     };
 
+    void clear(){
+        entities.clear();
+        for(int i = 0; i < grouped_entities.size(); i++)
+            grouped_entities[i].clear();
+    }
+
     void add_group(Entity* entity, std::size_t group_t){
         grouped_entities[group_t].emplace_back(entity);
     }
@@ -137,5 +153,7 @@ public:
         return *e;
     }
 };
+
+
 
 #endif //TEMPGAMEMOTOR_ECS_H
