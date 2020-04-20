@@ -6,7 +6,7 @@
 #define GAME_MOTOR_ENTITY_GEN_H
 
 #include <vector>
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 #include "ECS.h"
 
 #include <string>
@@ -42,8 +42,14 @@ public:
         json data_comps = entity_vals["components"];
 
         for (auto& c : data_comps.items())
-            ent_components.emplace_back(std::make_pair(c.key(), c.key()));
+            ent_components.emplace_back(std::make_pair(c.key(), c.value()));
+        i_file.close();
     }
+
+    std::vector<std::pair<std::string, json> > get_ent_components(){
+        return ent_components;
+    }
+
 };
 
 #endif //GAME_MOTOR_ENTITY_GEN_H

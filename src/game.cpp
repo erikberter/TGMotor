@@ -47,7 +47,7 @@ void Game::set_stage(const std::string& stage_t){
             if(!c.value().contains("components"))
                 continue;
             for(auto& c_comp : c.value()["components"].items())
-                temp_ent.add_component(ComponentMapSCT[c_comp.key()], &c_comp.value());
+                temp_ent.add_component(ComponentHelper::ComponentMapSCT[c_comp.key()], &c_comp.value());
         }
     }
 }
@@ -99,14 +99,13 @@ void Game::input(){
 }
 
 void Game::load_g_entities(const std::string& path){
-    const char* stg_regex = constants::ASSET_REGEX_PER;
-    std::vector<G_Entity> *g_ent_vec_p = &g_entities;
+    std::map<std::string, G_Entity> *g_ent_vec_p = &g_entities;
 
     sp_str::function_v_ss add_stage= [g_ent_vec_p](const std::string& a, const std::string& b){
-        g_ent_vec_p->push_back(G_Entity(b));
+        g_ent_vec_p->emplace(a, G_Entity(b));
     };
 
-    sp_str::functional_vector vec_t = {std::make_pair(stg_regex, add_stage)};
+    sp_str::functional_vector vec_t = {std::make_pair(constants::ASSET_REGEX_PER, add_stage)};
     file_rec(path, vec_t);
 }
 

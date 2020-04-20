@@ -4,6 +4,8 @@
 
 #include "ECS/ECS.h"
 
+ComponentHelper::map_type ComponentHelper::ComponentMap;
+ComponentHelper::map_sct ComponentHelper::ComponentMapSCT;
 
 void Entity::add_group(std::size_t group_t){
     group_bitset[group_t] = true;

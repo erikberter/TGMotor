@@ -6,7 +6,7 @@
 #define GAME_MOTOR_SCENERY_H
 
 #include <fstream>
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 
 class Stage{
 private:

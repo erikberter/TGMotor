@@ -38,7 +38,7 @@ private:
     void load_g_entities(const std::string& path);
 public:
     // TODO Move to private
-    std::vector<G_Entity> g_entities;
+    std::map<std::string, G_Entity> g_entities;
     std::map<std::string, json> stages;
     explicit Game(const std::string& config_file_path);
     ~Game();

@@ -12,7 +12,7 @@
 #include <bitset>
 #include <array>
 
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 
 class Component;
 class Entity;
@@ -32,8 +32,8 @@ namespace ComponentHelper{
 
     typedef std::map<std::string, ComponentType > map_sct;
     typedef std::map<ComponentType, ComponentBlock> map_type;
-    static map_type ComponentMap;
-    static map_sct ComponentMapSCT;
+    extern map_type ComponentMap;
+    extern map_sct ComponentMapSCT;
 
 };
 
@@ -85,7 +85,7 @@ public:
         return component_bitset[c_type];
     }
 
-    void add_component(ComponentHelper::ComponentType c_type, json *args){
+    Component* add_component(ComponentHelper::ComponentType c_type, json *args){
         Component* c;
         if(!has_component(c_type)){
             c = ComponentHelper::ComponentMap[c_type].creator();
@@ -98,12 +98,14 @@ public:
 
             c->init();
         }else
-            c = component_array[c_type];
+            c = get_component(c_type);
 
         c->set_data(args);
+        return c;
     }
-    void add_component(ComponentHelper::ComponentType c_type){
-        add_component(c_type, new json("{}"));
+    Component* add_component(ComponentHelper::ComponentType c_type){
+        if(has_component(c_type)) return get_component(c_type);
+        return add_component(c_type, new json("{}"));
     }
 
     Component* get_component(ComponentHelper::ComponentType c_type){
