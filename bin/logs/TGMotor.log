@@ -1,0 +1,32 @@
+﻿2020-04-22 02:43:15.722 DEBUG [15604] [Game::read_config@126] No config file found. Moving one from default.
+2020-04-22 02:44:03.519 DEBUG [6792] [AssetManager::load_resources@29] Default sssets loaded.
+2020-04-22 02:44:03.519 DEBUG [6792] [Game::load_g_entities@105] Entities loaded.
+2020-04-22 02:44:03.520 DEBUG [6792] [Game::load_stages@117] Stages loaded.
+2020-04-22 02:45:04.629 DEBUG [16380] [Game::read_config@126] No config file found. Moving one from default.
+2020-04-22 02:45:04.640 DEBUG [16380] [AssetManager::load_resources@29] Default assets loaded.
+2020-04-22 02:45:04.641 DEBUG [16380] [Game::load_g_entities@105] Entities loaded.
+2020-04-22 02:45:04.641 DEBUG [16380] [Game::load_stages@117] Stages loaded.
+2020-04-22 21:50:49.130 DEBUG [13664] [AssetManager::load_resources@29] Default assets loaded.
+2020-04-22 21:50:49.134 DEBUG [13664] [Game::load_g_entities@92] Entities loaded.
+2020-04-22 21:50:49.134 DEBUG [13664] [Game::load_stages@104] Stages loaded.
+2020-05-03 17:44:56.087 INFO  [12844] [Game::read_config@119] Config file read.
+2020-05-03 17:44:56.124 DEBUG [12844] [AssetManager::load_resources@29] Default assets loaded.
+2020-05-03 17:44:56.127 DEBUG [12844] [Game::load_g_entities@91] Entities loaded.
+2020-05-03 17:44:56.127 DEBUG [12844] [Game::load_stages@103] Stages loaded.
+2020-05-03 17:45:28.400 INFO  [312716] [Game::read_config@119] Config file read.
+2020-05-03 17:45:28.402 DEBUG [312716] [AssetManager::load_resources@29] Default assets loaded.
+2020-05-03 17:45:28.403 DEBUG [312716] [Game::load_g_entities@91] Entities loaded.
+2020-05-03 17:45:28.403 DEBUG [312716] [Game::load_stages@103] Stages loaded.
+2020-05-03 17:45:52.625 INFO  [58212] [Game::read_config@119] Config file read.
+2020-05-03 17:45:52.627 DEBUG [58212] [AssetManager::load_resources@29] Default assets loaded.
+2020-05-03 17:45:52.627 DEBUG [58212] [Game::load_g_entities@91] Entities loaded.
+2020-05-03 17:45:52.628 DEBUG [58212] [Game::load_stages@103] Stages loaded.
+2020-05-03 17:46:01.150 INFO  [138616] [Game::read_config@119] Config file read.
+2020-05-03 17:46:01.153 DEBUG [138616] [AssetManager::load_resources@29] Default assets loaded.
+2020-05-03 17:46:01.153 DEBUG [138616] [Game::load_g_entities@91] Entities loaded.
+2020-05-03 17:46:01.153 DEBUG [138616] [Game::load_stages@103] Stages loaded.
+2020-05-03 18:13:40.849 DEBUG [88448] [Game::read_config@112] No config file found. Moving one from default.
+2020-05-03 18:13:40.850 INFO  [88448] [Game::read_config@119] Config file read.
+2020-05-03 18:13:40.852 DEBUG [88448] [AssetManager::load_resources@29] Default assets loaded.
+2020-05-03 18:13:40.852 DEBUG [88448] [Game::load_g_entities@91] Entities loaded.
+2020-05-03 18:13:40.853 DEBUG [88448] [Game::load_stages@103] Stages loaded.

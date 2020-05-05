@@ -21,6 +21,13 @@
         "transform": {"pos": {"x" :300 ,"y" : 255}, "scale": 1, "vel": {"x": 0, "y": 0}},
         "sprite": {"animated" :  true, "sprite_name": "mago1" }
       }
+    },
+    "mage_base4": {
+      "entity": "mage_base",
+      "components": {
+        "transform": {"pos": {"x" :400 ,"y" : 255}, "scale": 1, "vel": {"x": 1, "y": 0}},
+        "sprite": {"animated" :  true, "sprite_name": "mago1" }
+      }
     }
   }
 }

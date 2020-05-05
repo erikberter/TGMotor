@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 17/04/2020.
-//
-
 #ifndef GAME_MOTOR_G_CONSTANTS_H
 #define GAME_MOTOR_G_CONSTANTS_H
 

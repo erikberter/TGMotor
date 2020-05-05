@@ -16,13 +16,12 @@ int main(int argc, char* argv[]){
     SDL_Window *win = SDL_CreateWindow("DEF",100,100,700,400,0);
     GameRender::ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
-    Game *g = new Game("../data/.config");
+    Game *g = new Game("../data/config.json");
 
     g->load_defs({});
     g->set_stage("stage1");
 
     g->main_loop();
-
 
     SDL_DestroyRenderer(GameRender::ren);
     SDL_DestroyWindow(win);

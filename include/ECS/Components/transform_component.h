@@ -1,12 +1,8 @@
-//
-// Created by whiwho on 15/03/2020.
-//
-
 #ifndef TEMPGAMEMOTOR_TRANSFORM_COMPONENT_H
 #define TEMPGAMEMOTOR_TRANSFORM_COMPONENT_H
 
 #include "ECS/ECS.h"
-#include "vector2d.h"
+#include "utils/vector2d.h"
 
 namespace ComponentHelper {
     extern ComponentHelper::ComponentType TRANSFORM;

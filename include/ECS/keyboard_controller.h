@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 15/03/2020.
-//
-
 #ifndef TEMPGAMEMOTOR_KEYBOARD_CONTROLLER_H
 #define TEMPGAMEMOTOR_KEYBOARD_CONTROLLER_H
 

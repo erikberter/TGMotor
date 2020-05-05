@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 15/03/2020.
-//
-
 #include "ECS/ECS.h"
 
 ComponentHelper::map_type ComponentHelper::ComponentMap;

@@ -489,7 +489,7 @@ extern "C" {
 /**
  *  \brief  A variable that lets you manually hint extra gamecontroller db entries.
  *
- *  The variable should be newline delimited rows of gamecontroller config data, see SDL_gamecontroller.h
+ *  The variable should be newline delimited rows of gamecontroller config.json data, see SDL_gamecontroller.h
  *
  *  This hint must be set before calling SDL_Init(SDL_INIT_GAMECONTROLLER)
  *  You can update mappings after the system is initialized with SDL_GameControllerMappingForGUID() and SDL_GameControllerAddMapping()
@@ -499,7 +499,7 @@ extern "C" {
 /**
  *  \brief  A variable that lets you provide a file with extra gamecontroller db entries.
  *
- *  The file should contain lines of gamecontroller config data, see SDL_gamecontroller.h
+ *  The file should contain lines of gamecontroller config.json data, see SDL_gamecontroller.h
  *
  *  This hint must be set before calling SDL_Init(SDL_INIT_GAMECONTROLLER)
  *  You can update mappings after the system is initialized with SDL_GameControllerMappingForGUID() and SDL_GameControllerAddMapping()

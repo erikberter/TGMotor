@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 15/03/2020.
-//
-
 #ifndef TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 #define TEMPGAMEMOTOR_COLLISION_COMPONENT_H
 
@@ -14,32 +10,25 @@ namespace ComponentHelper{
 }
 
 class CollisionComponent : public Component {
-
 private:
-    TransformComponent* transf;
+    TransformComponent* transf = nullptr;
+    SDL_Rect coll{};
 public:
-    SDL_Rect coll;
-    CollisionComponent(){
-        //gApp->colliders.push_back(this);
-    };
 
-    void set_data(json *data) override{
-        return;
-    }
+    CollisionComponent() = default;
 
     void init() override{
-        if(!entity->has_component(ComponentHelper::TRANSFORM))
-            entity->add_component(ComponentHelper::TRANSFORM);
-        transf = dynamic_cast<TransformComponent*>(entity->get_component(ComponentHelper::TRANSFORM));
+        transf = dynamic_cast<TransformComponent*>(entity->add_component(ComponentHelper::TRANSFORM));
     }
 
     void update() override{
-        coll.x = static_cast<int>(transf->x());
-        coll.y = static_cast<int>(transf->y());
-        coll.w = transf->width*transf->scale;
-        coll.h = transf->height*transf->scale;
+        coll = {static_cast<int>(transf->x()), static_cast<int>(transf->y()) ,
+                transf->width*transf->scale, transf->height*transf->scale};
     }
 
+    SDL_Rect get_coll() const{
+        return coll;
+    }
 };
 
 #endif //TEMPGAMEMOTOR_COLLISION_COMPONENT_H

@@ -7,7 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 add_subdirectory(lib)
 
 file(GLOB_RECURSE GAME_MOTOR_SOURCES ${CMAKE_CURRENT_LIST_DIR}/src/*)
-add_executable(${PROJECT_NAME} ${GAME_MOTOR_SOURCES} )
+add_executable(${PROJECT_NAME} ${GAME_MOTOR_SOURCES} include/TGMErrors.h)
 
 add_dependencies(${PROJECT_NAME} SDL2 JSON PLOG)
 target_include_directories( ${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

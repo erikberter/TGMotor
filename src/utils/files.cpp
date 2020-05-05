@@ -1,16 +1,11 @@
-//
-// Created by whiwho on 17/04/2020.
-//
-
 #include <fstream>
+#include <TGMErrors.h>
 #include "utils/files.h"
 
 void file_rec(const std::string& path, const sp_str::functional_vector& codes){
     DIR *dir;
     struct dirent *ent;
-    // TODO Set an error here
-
-    if ((dir = opendir(path.c_str())) == nullptr) return;
+    if ((dir = opendir(path.c_str())) == nullptr) throw file_not_found_exception(path);
 
     while ((ent = readdir (dir)) != nullptr) {
         if(strcmp(ent->d_name,".")==0 || strcmp(ent->d_name,"..")==0) continue;
@@ -25,15 +20,23 @@ void file_rec(const std::string& path, const sp_str::functional_vector& codes){
             code.second(file_name, path+ent->d_name);
         }
     }
-    closedir (dir);
+    closedir(dir);
 }
 
 json get_json(const std::string& path){
     std::ifstream f_file(path);
-    // TODO Throw Error
-    if(!f_file.is_open()) return nullptr;
+    if(!f_file.is_open()) throw file_not_found_exception("path");
 
     json data_json;
     f_file >> data_json;
+    f_file.close();
     return data_json;
+}
+
+void copy_file_from_to(const char *src, const char * dest){
+    std::ifstream src_file(src, std::ios::binary);
+    if(!src_file.is_open()) throw file_not_found_exception(src);
+
+    std::ofstream dest_file(dest, std::ios::binary);
+    dest_file << src_file.rdbuf();
 }

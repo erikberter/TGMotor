@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 19/04/2020.
-//
-
 #include "g_constants.h"
 
 const char* constants::ASSET_REGEX_PNG = "(^(?!._).*\\.png$)";

@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 15/03/2020.
-//
-
 #ifndef TEMPGAMEMOTOR_COLLISION_H
 #define TEMPGAMEMOTOR_COLLISION_H
 

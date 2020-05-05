@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 17/04/2020.
-//
-
 #ifndef GAME_MOTOR_ENTITY_GEN_H
 #define GAME_MOTOR_ENTITY_GEN_H
 
@@ -33,7 +29,7 @@ private:
     std::string id;
 public:
 
-    G_Entity(std::string path){
+    G_Entity(const std::string& path){
         json entity_vals;
 
         std::ifstream i_file(path);

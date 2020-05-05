@@ -1,7 +1,3 @@
-//
-// Created by whiwho on 15/03/2020.
-//
-
 #ifndef TEMPGAMEMOTOR_ECS_H
 #define TEMPGAMEMOTOR_ECS_H
 
@@ -53,7 +49,7 @@ class Entity{
 private :
     Manager& manager;
     bool active = true;
-    std::vector<Component* > components;
+    std::vector<std::unique_ptr<Component>> components;
 
     std::map<ComponentHelper::ComponentType, Component*> component_array;
     std::bitset<max_components> component_bitset;
@@ -91,14 +87,12 @@ public:
             c = ComponentHelper::ComponentMap[c_type].creator();
 
             c->entity = this;
-            components.push_back(c);
-
+            components.push_back(std::move(std::unique_ptr<Component>{c}));
             component_array[c_type] = c;
             component_bitset[c_type] = true;
 
             c->init();
-        }else
-            c = get_component(c_type);
+        }else c = get_component(c_type);
 
         c->set_data(args);
         return c;
@@ -108,9 +102,13 @@ public:
         return add_component(c_type, new json("{}"));
     }
 
+    void add_components(json components_data){
+        for(auto& c_comp : components_data.items())
+            add_component(ComponentHelper::ComponentMapSCT[c_comp.key()], &c_comp.value());
+    }
+
     Component* get_component(ComponentHelper::ComponentType c_type){
-        Component* ptr = component_array[c_type];
-        return ptr;
+        return component_array[c_type];
     }
 };
 
@@ -143,8 +141,8 @@ public:
 
     void clear(){
         entities.clear();
-        for(int i = 0; i < grouped_entities.size(); i++)
-            grouped_entities[i].clear();
+        for(auto & grouped_entity : grouped_entities)
+            grouped_entity.clear();
     }
 
     void add_group(Entity* entity, std::size_t group_t){
@@ -156,7 +154,7 @@ public:
     }
 
     Entity& add_entity(){
-        Entity* e = new Entity(*this);
+        auto e = new Entity(*this);
         std::unique_ptr<Entity> uPtr{e};
         entities.emplace_back(std::move(uPtr));
         return *e;
